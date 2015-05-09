@@ -1,3 +1,7 @@
+body{
+    padding: 30px;
+    margin: 0 auto;
+}
 .left {
     color: rgb(142, 142, 142);
     border: 1px solid;
@@ -15,7 +19,7 @@
     border: 1px solid;
     margin: auto 15px;
     float: left;
-    width: 60%;
+    width: 67%;
     height: auto;
 
 }
