@@ -1,6 +1,7 @@
 body{
     padding: 30px;
     margin: 0 auto;
+    width: 1160px;
 }
 .left {
     color: rgb(142, 142, 142);
@@ -22,6 +23,7 @@ body{
     width: 67%;
     height: auto;
 
+    margin-bottom: 30px;
 }
 
 .head_pic {
@@ -49,7 +51,7 @@ body{
 .head_item {
     float: left;
     border: 1px solid;
-    margin: auto 15px;
+    margin: auto 14px;
 }
 
 .head_item:hover {
@@ -115,4 +117,6 @@ body{
 
 .content {
     margin: 0 auto;
+    width: 960px;
+    width:100%;
 }
