@@ -1,0 +1,100 @@
+body {
+    margin: 30px auto;
+    width: 960px;
+}
+
+.content {
+    width: 100%;
+    border: 1px solid red;
+    /* height: 400px; */
+}
+
+p {
+    text-indent: 2em;
+}
+
+.leftContent {
+    width: 69%;
+    border: 1px solid red;
+    /* height: 300px; */
+    float: left;
+}
+
+.rightContent {
+    width: 30%;
+    border: 1px solid darkblue;
+    height: 200px;
+    float: right;
+}
+
+.articleTitle {
+    width: 100%;
+    border: 1px solid darkgoldenrod;
+    height: 300px;
+    line-height: 300px;
+}
+
+.titleInfo {
+    line-height: normal;
+    vertical-align: middle;
+    display: inline-block;
+    font-size: 32px;
+}
+
+.catalog {
+    float: left;
+    line-height: initial;
+    position: relative;
+    top: -74px;
+}
+
+.catalogList {
+    margin-left: 20px;
+}
+
+.statisticInfo {
+
+    line-height: initial;
+    margin-top: -45px;
+    float: right;
+    margin-right: 20px;
+
+}
+
+.statisticNum {
+    margin-right: 20px;
+}
+
+.articleInfo {
+    font-size: 16px;
+    text-align: left;
+    margin-left: 20px;
+    /* position: relative; */
+    /* left: -157px; */
+    /* float: left; */
+    clear: both;
+}
+
+.interactionList {
+    border: 1px solid rgb(71, 207, 61);
+    height: 300px;
+}
+
+.interaction{
+    float:left;
+    margin-left: 10%;
+}
+
+.articleContent {
+    padding-top: 20px;
+    margin: 0 20px;
+}
+
+@font-face {
+    font-family: "FangSong";
+    src: local("FangSong");
+}
+
+body {
+    font-family: "FangSong", serif
+}

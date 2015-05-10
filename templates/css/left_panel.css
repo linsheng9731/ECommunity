@@ -76,7 +76,7 @@ body{
     border: 1px solid;
     width: 45px;
     height: 40px;
-    background-image: url(./image/my.png);
+    background-image: url(../image/my.png);
 }
 
 .head_line {
