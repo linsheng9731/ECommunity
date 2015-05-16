@@ -23,7 +23,7 @@ p {
 .rightContent {
     width: 30%;
     border: 1px solid darkblue;
-    /* height: 200px; */
+    height: 200px;
     float: right;
 }
 
@@ -108,30 +108,3 @@ p {
 body {
     font-family: "FangSong", serif
 }
-
-.commentsNum{
-    height: 80px;
-    line-height: 80px;
-    text-align: center;
-    background-color: #F7F7F7;
-    font-size: 25px;
-}
-
-.commentList{
-    height: 115px;
-}
-
-.thumbnail{
-    height: 100%;
-    width: 23%;
-    margin-top: 20px;
-    /* border: 1px solid; */
-    margin-left: 6px;
-    float: left;
-}
-
-.commentInfo{
-    float: left;
-}
-
-
