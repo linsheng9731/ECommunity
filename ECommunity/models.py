@@ -3,60 +3,77 @@ __author__ = 'damon_lin'
 
 from django.db import models
 
-class News(models.Model):
+class Channel(models.Model):
+    # 标题 #
+    title = models.CharField(max_length=100)
+    # 正文 #
+    content = models.CharField(max_length=300)
+    # 缩略图 #
+    img = models.CharField(max_length=300)
+    # 一级目录的顺序 #
+    cata = models.CharField(max_length=100)
+    # 表示二级目录的顺序 #
+    num = models.CharField(max_length=100)
+    # 描述 #
+    dec = models.TextField()
+    # 表示是一级还是二级 #
+    type = models.CharField(max_length=100)
+
+#文章
+class Article(models.Model):
+
+    #Article_ID
+
+    author = models.CharField(max_length=100)
 
     title = models.CharField(max_length=100)
 
-    content = models.CharField(max_length=300)
+    body = models.TextField()
+
+    img = models.CharField(max_length=100)
+
+    # which channel the article belong to #
+    channel = models.ForeignKey(Channel)
+
+    type = models.TextField()
+
+    create_time = models.CharField(max_length=100)
+
+    url = models.CharField(max_length=300,default=None)
 
 #用户
 class Customer(models.Model):
 
-    User_Phone = models.CharField(max_length=100)
+    phone = models.CharField(max_length=100)
 
-    User_NickName = models.CharField(max_length=100)
+    nickname = models.CharField(max_length=100)
 
-    User_Sex = models.CharField(max_length=100)
+    sex = models.CharField(max_length=100)
 
-    User_PicURL	= models.CharField(max_length=100)
+    icon = models.CharField(max_length=300)
 
-    User_Grade = models.CharField(max_length=100)
+    grade = models.CharField(max_length=100)
 
-#频道
-class Channel(models.Model):
+    channels = models.ManyToManyField(Channel)
 
-    #Channel_ID = models.CharField(max_length=100)
+    articles = models.ManyToManyField(Article)
 
-    Channel_Name = models.CharField(max_length=100)
+# #频道
+# class Channel(models.Model):
+#
+#     #Channel_ID = models.CharField(max_length=100)
+#
+#     Channel_Name = models.CharField(max_length=100)
+#
+#     Type_ID = models.CharField(max_length=100)
+#
+#     Channel_Num = models.CharField(max_length=100)
+#
+#     Channel_Cata = models.CharField(max_length=100)
+#
+#     Channel_Desc = models.CharField(max_length=100)
+#
+#     Channel_PicURL = models.CharField(max_length=100)
 
-    Type_ID = models.CharField(max_length=100)
 
-    Channel_Num = models.CharField(max_length=100)
 
-    Channel_Cata = models.CharField(max_length=100)
-
-    Channel_Desc = models.CharField(max_length=100)
-
-    Channel_PicURL = models.CharField(max_length=100)
-
-#文章
-class article(models.Model):
-
-    #Article_ID
-
-    Article_author = models.CharField(max_length=100)
-
-    Article_Title = models.CharField(max_length=100)
-
-    Article_Body = models.TextField()
-
-    Article_Logo_pic = models.CharField(max_length=100)
-
-    # which channel the article belong to #
-    Article_channel_ID = models.ForeignKey(Channel)
-
-    Article_Desc = models.TextField()
-
-    Article_Create_time = models.CharField(max_length=100)
-
-    Article_Create_modify = models.CharField(max_length=100)

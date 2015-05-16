@@ -7,5 +7,17 @@ urlpatterns = [
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^', include('News.urls')),
+    #url(r'^', include('News.urls')),
+
+    url(r'^get_channels$', 'ECommunity.channel_view.get_channels'),
+
+
+    url(r'^get_articles$', 'ECommunity.article_view.get_articles'),
+    url(r'^get_channel_articles$', 'ECommunity.article_view.get_channel_articles'),
+
+    url(r'^get_users$', 'ECommunity.user_view.get_users'),
+    url(r'^get_user$', 'ECommunity.user_view.get_user'),
+    url(r'^get_user_channels$', 'ECommunity.user_view.get_user_channels'),
+    url(r'^get_user_articles$', 'ECommunity.user_view.get_user_articles'),
+
 ]
