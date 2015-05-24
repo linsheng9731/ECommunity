@@ -79,6 +79,7 @@ WSGI_APPLICATION = 'ECommunity.wsgi.application'
 
 DATABASES = {
     'default': {
+        # 'ENGINE': 'django.db.backends.sqlite3',
         'ENGINE': 'django.db.backends.mysql',
         'HOST':'121.40.136.199',
         'NAME': 'ECommunity',

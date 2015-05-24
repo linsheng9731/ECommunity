@@ -29,7 +29,7 @@ def get_user_channels(request):
     if customer[0] == None:
         return HttpResponse('no user find !')
     channels = customer[0].channels.all()
-    atrs=['id','img','cata','num','title','dec','type']
+    atrs=['id','img','cata','num','title','desc','type']
     json_obj = serializer.ser(channels,atrs)
     return HttpResponse(json_obj)
 
@@ -40,8 +40,9 @@ def get_user_articles(request):
     customer = Customer.objects.filter(id = id)
     if customer[0] == None:
         return HttpResponse('no user find !')
-    articles= customer[0].articles.all()
+    articles = customer[0].articles.all()
     atrs = ['id','title','body','img','type','create_time','author','channel_id','url']
     json_obj = serializer.ser(articles,atrs)
+
     return HttpResponse(json_obj)
 

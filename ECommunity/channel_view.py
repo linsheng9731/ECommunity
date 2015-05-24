@@ -9,6 +9,6 @@ import json
 #获取所有的频道列表
 def get_channels(request):
     channels = Channel.objects.all()
-    atrs=['id','img','cata','num','title','dec','type']
+    atrs=['id','img','cata','num','title','desc','type']
     json_obj = serializer.ser(channels,atrs)
     return HttpResponse(json_obj)

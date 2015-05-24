@@ -15,7 +15,7 @@ class Channel(models.Model):
     # 表示二级目录的顺序 #
     num = models.CharField(max_length=100)
     # 描述 #
-    dec = models.TextField()
+    desc = models.TextField()
     # 表示是一级还是二级 #
     type = models.CharField(max_length=100)
 
