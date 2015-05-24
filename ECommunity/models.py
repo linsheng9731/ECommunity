@@ -9,7 +9,7 @@ class Channel(models.Model):
     # 正文 #
     content = models.CharField(max_length=300)
     # 缩略图 #
-    img = models.CharField(max_length=300)
+    image = models.CharField(max_length=300)
     # 一级目录的顺序 #
     cata = models.CharField(max_length=100)
     # 表示二级目录的顺序 #
@@ -30,7 +30,7 @@ class Article(models.Model):
 
     body = models.TextField()
 
-    img = models.CharField(max_length=100)
+    image = models.CharField(max_length=100)
 
     # which channel the article belong to #
     channel = models.ForeignKey(Channel)
@@ -40,6 +40,10 @@ class Article(models.Model):
     create_time = models.CharField(max_length=100)
 
     url = models.CharField(max_length=300,default=None)
+
+    desc = models.TextField(default="")
+
+    day = models.CharField(max_length=100,default=1)
 
 #用户
 class Customer(models.Model):

@@ -18,9 +18,19 @@ class serializer():
                 obj[atr] = getattr(item,atr)
             json_obj.append(obj)  # 将普通map对象转化成json格式
         if serflag:
-            return json.dumps(json_obj)
+            return json.dumps(json_obj)  # 转化为json对象
         else:
             return json_obj
+
+    @classmethod
+    def wrap(self,json_obj,objname=None,append=None):
+        final_obj = {}
+        if append:
+            for k,v in append.items():
+                final_obj[k] = v
+        final_obj[objname] = json_obj
+        json_obj = json.dumps(final_obj)
+        return json_obj
 
     @classmethod
     def cov(self,item):
