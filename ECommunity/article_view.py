@@ -36,7 +36,7 @@ def get_channel_articles(request):
     day = int(max_day) - int(day)  # 获取当前查询更新次数
     articles = Article.objects.filter(channel=channel,day=str(day)).order_by('-create_time')  # 降序
 
-    atrs = ['id','title','body','image','type','create_time','author','channel_id','url',"desc"]  # 降序
+    atrs = ['id','title','image','type','create_time','author','channel_id','url',"desc"]  # 降序
     json_obj = serializer.ser(articles,atrs,serflag=False)  # 不进行序列化
     datatmp = {"date":"123"}
     return HttpResponse(serializer.wrap(json_obj,"articles",datatmp))
