@@ -43,11 +43,7 @@ INSTALLED_APPS = (
     #'rest_framework',
     #'News',
     'ECommunity',
-<<<<<<< HEAD
-    'haystack'
-=======
-
->>>>>>> 20382264050ec8be3b91e1fe0ac9b72a2252693b
+    'haystack',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -121,7 +117,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
-<<<<<<< HEAD
 
 HAYSTACK_CONNECTIONS = {
     'default': {
@@ -130,7 +125,4 @@ HAYSTACK_CONNECTIONS = {
     },
 }
 
-
-=======
 STATIC_ROOT = '/Users/damon_lin/Documents/GitHub/ECommunity/ECommunity/static'
->>>>>>> 20382264050ec8be3b91e1fe0ac9b72a2252693b

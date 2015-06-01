@@ -1,12 +1,8 @@
 mysql
 Markdown
-<<<<<<< HEAD
 Django==1.8
 django-haystack
 jieba
 whoosh
-=======
-Django==1.7
 django-grappelli==2.6.5
 
->>>>>>> 20382264050ec8be3b91e1fe0ac9b72a2252693b
