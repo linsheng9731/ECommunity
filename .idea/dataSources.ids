@@ -19,10 +19,10 @@
       <column name="url" sqlType="VARCHAR" precision="300" scale="0" nullable="false" jdbcType="12"/>
       <column name="desc" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="false" jdbcType="-1"/>
       <column name="day" sqlType="VARCHAR" precision="100" scale="0" nullable="false" jdbcType="12"/>
+      <column name="text" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="false" jdbcType="-1"/>
       <primary-key name="PRIMARY" columns="id"/>
-      <foreign-key name="channel_id_refs_id_95d9f8e0" columns="channel_id" ref-table="ECommunity_channel" ref-schema="" ref-catalog="ECommunity" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
       <foreign-key name="ECommunity__channel_id_4b985e191495859d_fk_ECommunity_channel_id" columns="channel_id" ref-table="ECommunity_channel" ref-schema="" ref-catalog="ECommunity" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
-      <exported-key name="article_id_refs_id_09d767d9" table="ECommunity_customer_articles" schema="" catalog="ECommunity" columns="article_id"/>
+      <exported-key name="ECommunity__article_id_6b7920fb1adaddc8_fk_ECommunity_article_id" table="ECommunity_customer_articles" schema="" catalog="ECommunity" columns="article_id"/>
       <index name="ECommunity_article_0bf48010" unique="false" columns="channel_id"/>
     </table>
     <table name="ECommunity_blog" schema="" catalog="ECommunity" type="TABLE">
@@ -41,9 +41,8 @@
       <column name="desc" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="true" jdbcType="-1"/>
       <column name="image" sqlType="VARCHAR" precision="300" scale="0" nullable="true" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="id"/>
-      <exported-key name="channel_id_refs_id_95d9f8e0" table="ECommunity_article" schema="" catalog="ECommunity" columns="channel_id"/>
       <exported-key name="ECommunity__channel_id_4b985e191495859d_fk_ECommunity_channel_id" table="ECommunity_article" schema="" catalog="ECommunity" columns="channel_id"/>
-      <exported-key name="channel_id_refs_id_d1e8d338" table="ECommunity_customer_channels" schema="" catalog="ECommunity" columns="channel_id"/>
+      <exported-key name="ECommunity__channel_id_7ddbaa0f7230f37a_fk_ECommunity_channel_id" table="ECommunity_customer_channels" schema="" catalog="ECommunity" columns="channel_id"/>
     </table>
     <table name="ECommunity_customer" schema="" catalog="ECommunity" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
@@ -52,29 +51,32 @@
       <column name="phone" sqlType="VARCHAR" precision="100" scale="0" nullable="true" jdbcType="12"/>
       <column name="nickname" sqlType="VARCHAR" precision="100" scale="0" nullable="true" jdbcType="12"/>
       <column name="sex" sqlType="VARCHAR" precision="100" scale="0" nullable="true" jdbcType="12"/>
+      <column name="user_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <primary-key name="PRIMARY" columns="id"/>
-      <exported-key name="customer_id_refs_id_a411fa5d" table="ECommunity_customer_articles" schema="" catalog="ECommunity" columns="customer_id"/>
-      <exported-key name="customer_id_refs_id_cccaad49" table="ECommunity_customer_channels" schema="" catalog="ECommunity" columns="customer_id"/>
+      <foreign-key name="ECommunity_customer_user_id_5b57ace6dfea1639_fk_auth_user_id" columns="user_id" ref-table="auth_user" ref-schema="" ref-catalog="ECommunity" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="ECommunit_customer_id_2094759ad782fee9_fk_ECommunity_customer_id" table="ECommunity_customer_articles" schema="" catalog="ECommunity" columns="customer_id"/>
+      <exported-key name="ECommunit_customer_id_6c0364782f454e8c_fk_ECommunity_customer_id" table="ECommunity_customer_channels" schema="" catalog="ECommunity" columns="customer_id"/>
+      <index name="ECommunity_customer_e8701ad4" unique="false" columns="user_id"/>
     </table>
     <table name="ECommunity_customer_articles" schema="" catalog="ECommunity" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="customer_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="article_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <primary-key name="PRIMARY" columns="id"/>
-      <foreign-key name="article_id_refs_id_09d767d9" columns="article_id" ref-table="ECommunity_article" ref-schema="" ref-catalog="ECommunity" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
-      <foreign-key name="customer_id_refs_id_a411fa5d" columns="customer_id" ref-table="ECommunity_customer" ref-schema="" ref-catalog="ECommunity" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="ECommunit_customer_id_2094759ad782fee9_fk_ECommunity_customer_id" columns="customer_id" ref-table="ECommunity_customer" ref-schema="" ref-catalog="ECommunity" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="ECommunity__article_id_6b7920fb1adaddc8_fk_ECommunity_article_id" columns="article_id" ref-table="ECommunity_article" ref-schema="" ref-catalog="ECommunity" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
       <index name="customer_id" unique="true" columns="article_id"/>
-      <index name="article_id_refs_id_09d767d9" unique="false" columns="article_id"/>
+      <index name="ECommunity__article_id_6b7920fb1adaddc8_fk_ECommunity_article_id" unique="false" columns="article_id"/>
     </table>
     <table name="ECommunity_customer_channels" schema="" catalog="ECommunity" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="customer_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="channel_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <primary-key name="PRIMARY" columns="id"/>
-      <foreign-key name="channel_id_refs_id_d1e8d338" columns="channel_id" ref-table="ECommunity_channel" ref-schema="" ref-catalog="ECommunity" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
-      <foreign-key name="customer_id_refs_id_cccaad49" columns="customer_id" ref-table="ECommunity_customer" ref-schema="" ref-catalog="ECommunity" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="ECommunit_customer_id_6c0364782f454e8c_fk_ECommunity_customer_id" columns="customer_id" ref-table="ECommunity_customer" ref-schema="" ref-catalog="ECommunity" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="ECommunity__channel_id_7ddbaa0f7230f37a_fk_ECommunity_channel_id" columns="channel_id" ref-table="ECommunity_channel" ref-schema="" ref-catalog="ECommunity" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
       <index name="customer_id" unique="true" columns="channel_id"/>
-      <index name="channel_id_refs_id_d1e8d338" unique="false" columns="channel_id"/>
+      <index name="ECommunity__channel_id_7ddbaa0f7230f37a_fk_ECommunity_channel_id" unique="false" columns="channel_id"/>
     </table>
     <table name="auth_group" schema="" catalog="ECommunity" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
@@ -118,6 +120,7 @@
       <column name="is_active" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
       <column name="date_joined" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
       <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="ECommunity_customer_user_id_5b57ace6dfea1639_fk_auth_user_id" table="ECommunity_customer" schema="" catalog="ECommunity" columns="user_id"/>
       <exported-key name="auth_user_groups_user_id_4b5ed4ffdb8fd9b0_fk_auth_user_id" table="auth_user_groups" schema="" catalog="ECommunity" columns="user_id"/>
       <exported-key name="auth_user_user_permissi_user_id_7f0938558328534a_fk_auth_user_id" table="auth_user_user_permissions" schema="" catalog="ECommunity" columns="user_id"/>
       <exported-key name="django_admin_log_user_id_52fdd58701c5f563_fk_auth_user_id" table="django_admin_log" schema="" catalog="ECommunity" columns="user_id"/>
