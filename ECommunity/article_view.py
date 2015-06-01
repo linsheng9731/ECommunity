@@ -30,10 +30,7 @@ def get_channel_articles(request):
     day = get['date']
     channel = Channel.objects.get(id=id)
 
-    # create_time = datetime.datetime.now()-datetime.timedelta(days=1)
-    articles = Article.objects.filter(channel=channel).order_by('-day')  # 获取最大更新次数
-    max_day = articles[0].day
-    day = int(max_day) - int(day)  # 获取当前查询更新次数
+
     articles = Article.objects.filter(channel=channel,day=str(day)).order_by('-create_time')  # 降序
 
     atrs = ['id','title','image','type','create_time','author','channel_id','url',"desc"]  # 降序

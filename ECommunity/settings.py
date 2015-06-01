@@ -31,6 +31,9 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
+    # 'django_admin_bootstrapped',
+
+    'grappelli',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -40,6 +43,7 @@ INSTALLED_APPS = (
     #'rest_framework',
     #'News',
     'ECommunity',
+
 )
 
 MIDDLEWARE_CLASSES = (
@@ -55,6 +59,7 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'ECommunity.urls'
 
+# DAB_FIELD_RENDERER = 'django_admin_bootstrapped.renderers.BootstrapFieldRenderer'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -62,6 +67,7 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                "django.core.context_processors.request",  # admin skin
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
@@ -93,9 +99,12 @@ DATABASES = {
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+# LANGUAGE_CODE = 'en-us'
+#
+# TIME_ZONE = 'UTC'
+LANGUAGE_CODE='zh-CN'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE ='Asia/Shanghai'
 
 USE_I18N = True
 
@@ -108,3 +117,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = '/Users/damon_lin/Documents/GitHub/ECommunity/ECommunity/static'

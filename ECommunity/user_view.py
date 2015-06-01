@@ -2,9 +2,10 @@
 __author__ = 'damon_lin'
 
 from ECommunity.models import Customer,Channel,Article
-from utils import serializer
+from utils import serializer,auth
 from django.http import HttpResponse
 import json
+
 # 获取所有用户
 def get_users(request):
     customers = Customer.objects.all()
@@ -22,12 +23,10 @@ def get_user(request):
     return HttpResponse(json_obj)
 
 # 获取某个用户关注的频道列表 多对多的关系 --finish
+@auth
 def get_user_channels(request):
     post = request.POST
     phone = post['phonenum']
-
-    pwd = post['pwd'] # 验证预留
-
     customer = Customer.objects.filter(phone = phone)
     if customer[0] == None:
         return HttpResponse('no user find !')
@@ -38,12 +37,10 @@ def get_user_channels(request):
     return HttpResponse(serializer.wrap(json_obj,"userChannels",append))
 
 # 获取某个用户关注的文章列表 多对多的关系 --finish
+@auth
 def get_user_articles(request):
     post = request.POST
     phone = post['phonenum']
-
-    pwd = post['pwd']
-
     customer = Customer.objects.filter(phone = phone)
     if customer[0] == None:
         return HttpResponse('no user find !')
@@ -54,11 +51,11 @@ def get_user_articles(request):
     return HttpResponse(serializer.wrap(json_obj,"favorites"))
 
 # 取消关注频道
+@auth
 def del_user_channel(request):
     post = request.POST
     phone = post['phonenum']
     channelid = post['channelid']
-    pwd = post['pwd'] # 验证预留
     customer = Customer.objects.filter(phone = phone)
     if customer[0] == None:
         return HttpResponse('no user find !')
@@ -67,11 +64,11 @@ def del_user_channel(request):
     return HttpResponse(json.dumps({'status':'ok'}))
 
 # 添加关注频道
+@auth
 def add_user_channel(request):
     post = request.POST
     phone = post['phonenum']
     channelid = post['channelid']
-    pwd = post['pwd'] # 验证预留
     customer = Customer.objects.filter(phone = phone)
     if customer[0] == None:
         return HttpResponse('no user find !')
@@ -80,11 +77,11 @@ def add_user_channel(request):
     return HttpResponse(json.dumps({'status':'ok'}))
 
 # 取消收藏文章
+@auth
 def del_user_article(request):
     post = request.POST
     phone = post['phonenum']
     articleid = post['articleid']
-    pwd = post['pwd'] # 验证预留
     customer = Customer.objects.filter(phone = phone)
     if customer[0] == None:
         return HttpResponse('no user find !')
@@ -93,11 +90,11 @@ def del_user_article(request):
     return HttpResponse(json.dumps({'status':'ok'}))
 
 # 添加收藏文章
+@auth
 def add_user_article(request):
     post = request.POST
     phone = post['phonenum']
     articleid = post['articleid']
-    pwd = post['pwd']  # 验证预留
     customer = Customer.objects.filter(phone = phone)
     if customer[0] == None:
         return HttpResponse('no user find !')
