@@ -28,4 +28,6 @@ urlpatterns = [
     url(r'^add_user_channel$', 'ECommunity.user_view.add_user_channel'),
     url(r'^add_user_article$', 'ECommunity.user_view.add_user_article'),
 
+    url(r'^search$', 'ECommunity.search_view.getSearchResult'),
+
 ]

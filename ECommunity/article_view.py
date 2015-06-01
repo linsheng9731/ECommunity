@@ -40,3 +40,4 @@ def get_channel_articles(request):
     json_obj = serializer.ser(articles,atrs,serflag=False)  # 不进行序列化
     datatmp = {"date":"123"}
     return HttpResponse(serializer.wrap(json_obj,"articles",datatmp))
+

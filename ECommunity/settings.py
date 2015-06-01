@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     #'rest_framework',
     #'News',
     'ECommunity',
+    'haystack'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -108,3 +109,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'ECommunity.whoosh_backend_cn.WhooshEngine',
+        'PATH': os.path.join(os.path.dirname(__file__), 'whoosh_index'),
+    },
+}
+
+
