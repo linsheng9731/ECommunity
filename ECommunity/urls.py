@@ -5,10 +5,10 @@ urlpatterns = [
     # Examples:
     # url(r'^$', 'ECommunity.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
-    url(r'^grappelli/', include('grappelli.urls')), # grappelli URLS
+    url(r'^grappelli/', include('grappelli.urls')),  # grappelli URLS
     url(r'^admin/', include(admin.site.urls)),
 
-    #url(r'^', include('News.urls')),
+    # url(r'^', include('News.urls')),
 
     url(r'^get_channels$', 'ECommunity.channel_view.get_channels'),
     url(r'^session_test', 'ECommunity.channel_view.session_test'),
@@ -25,16 +25,30 @@ urlpatterns = [
     url(r'^del_user_channel$', 'ECommunity.user_view.del_user_channel'),
     url(r'^del_user_article$', 'ECommunity.user_view.del_user_article'),
 
-
     url(r'^add_user_channel$', 'ECommunity.user_view.add_user_channel'),
     url(r'^add_user_article$', 'ECommunity.user_view.add_user_article'),
 
-<<<<<<< HEAD
+
+    url(r'^get_user_comments', 'ECommunity.comment_view.get_user_comments'),
+    url(r'^get_article_comments', 'ECommunity.comment_view.get_article_comments'),
+    url(r'^add_comment', 'ECommunity.comment_view.add_comment'),
+
+    # url(r'^add_collection$', 'ECommunity.collection_view.add_collection'),
+    # url(r'^del_collection$', 'ECommunity.collection_view.del_collection'),
+    # url(r'^update_collection$', 'ECommunity.collection_view.update_collection'),
+    url(r'^get_collections$','ECommunity.collection_view.get_collections'),
+    # url(r'^add_collection_article$', 'ECommunity.collection_view.add_collection_article'),
+    # url(r'^del_collection_article$', 'ECommunity.collection_view.del_collection_article'),
+    # url(r'^update_collection_article$', 'ECommunity.collection_view.update_collection_article'),
+    url(r'^get_collection_articles$', 'ECommunity.collection_view.get_collection_articles'),
+
     url(r'^search$', 'ECommunity.search_view.getSearchResult'),
-=======
+
     url(r'^begin_phone_verify', 'ECommunity.plugins.phone_register.begin_phone_verify'),
     url(r'^phone_verify', 'ECommunity.plugins.phone_register.phone_verify'),
-     url(r'^login', 'ECommunity.plugins.phone_register.userLogin'),
->>>>>>> 20382264050ec8be3b91e1fe0ac9b72a2252693b
+    url(r'^login', 'ECommunity.plugins.phone_register.userLogin'),
+
+    url(r'^get_qrcode', 'ECommunity.qrcode_view.get_qrcode'),
+
 
 ]

@@ -1,7 +1,7 @@
 # coding:utf8 #
 __author__ = 'damon_lin'
 
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required,permission_required
 from ECommunity.models import Customer,Channel,Article
 from django.http import HttpResponse
 import json
