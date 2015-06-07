@@ -35,8 +35,8 @@ def del_collection_articles(request):
 
 # get Collection Articles
 def get_collection_articles(request):
-    post = request.POST
-    id = post['id']
+    get = request.GET
+    id = get['id']
     collections = Collection.objects.filter(id=id).order_by("-create_time")
     collection = collections[0]
     articles = collection.articles.all().order_by("-create_time");
