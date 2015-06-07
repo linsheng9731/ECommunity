@@ -41,8 +41,9 @@ def get_collection_articles(request):
     collection = collections[0]
     articles = collection.articles.all().order_by("-create_time");
     attrs = ['id', 'title', 'image', 'type', 'create_time', 'author', 'channel_id', 'url', "desc"]
-    json_obj = serializer.ser(articles, attrs)
-    return HttpResponse(json_obj)
+    json_obj = serializer.ser(articles, attrs,serflag=False)
+
+    return HttpResponse(serializer.wrap(json_obj,"collects"))
 
 
 # add Collection
