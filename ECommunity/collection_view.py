@@ -1,7 +1,7 @@
 # coding:utf8 #
 __author__ = 'damon_lin'
 
-from ECommunity.models import Article, Collection
+from ECommunity.models import Article, Collection, Channel
 from utils import serializer
 from django.http import HttpResponse
 import json
@@ -48,8 +48,8 @@ def get_collection_articles(request):
 # add Collection
 # def add_Collection(request):
 # post = request.POST
-#     phone = post['phonenum']
-#     Collection = Collection()
+# phone = post['phonenum']
+# Collection = Collection()
 #     Collection.save()
 #     return HttpResponse(json.dumps({'status':'ok'}))
 
@@ -79,15 +79,14 @@ def del_collection(request):
 
 # get Collection
 def get_collections(request):
-    post = request.POST
-    # id = post['id']
-    Collections = Collection.objects.all().order_by("-create_time")
-    collection = Collections[0]
-    atrs = []
-    atrs.append("id")
-    atrs.append('title')
-    atrs.append('image')
-    atrs.append('desc')
-    atrs.append('create_time')
-    json_obj = serializer.ser(Collections, atrs)
-    return HttpResponse(json_obj)
+    get = request.GET
+    channel_id = get['channelid']
+    day = get['date']
+    channel = Channel.objects.get(id=id)
+
+    collections = Collection.objects.filter(channel=channel_id).order_by('-create_time')  # 降序
+
+    atrs = ['id', 'title', 'image', 'create_time', "desc"]
+    json_obj = serializer.ser(collections, atrs, serflag=False)  # 不进行序列化
+    datatmp = {"date": "123"}
+    return HttpResponse(serializer.wrap(json_obj, "articles", datatmp))

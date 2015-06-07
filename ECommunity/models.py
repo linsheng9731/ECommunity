@@ -45,7 +45,7 @@ class Article(models.Model):
     # which channel the article belong to #
     channel = models.ForeignKey(Channel, verbose_name='频道')
 
-    type = models.TextField('类型')
+    type = models.TextField('类型',default="A")
 
     create_time = models.CharField('创建时间', max_length=100)
 
@@ -78,7 +78,8 @@ class Customer(models.Model):
     articles = models.ManyToManyField(Article, verbose_name='article')
 
     def __unicode__(self):
-        return u"phone:%s nickname:%s " % (self.phone,self.nickname)
+        return u"phone:%s nickname:%s " % (self.phone, self.nickname)
+
 
 class Collection(models.Model):
     # 标题 #
@@ -87,15 +88,20 @@ class Collection(models.Model):
     image = models.CharField('缩略图', max_length=300)
     # 描述 #
     desc = models.TextField('描述')
+    # 类型 #
+    type = models.CharField('类型',max_length=300,default="C")
     # 创建时间 #
     create_time = models.CharField('创建时间', max_length=100)
     # 文章 #
     articles = models.ManyToManyField(Article, verbose_name='article')
     # 编辑 #
-    author = models.ManyToManyField(Customer,verbose_name="authors")
+    author = models.CharField(max_length=300,default="None")
+    # 所属频道 #
+    channel = models.ForeignKey(Channel, verbose_name="频道", default=1)
 
     def __unicode__(self):
         return u"%s" % (self.title)
+
 
 class Comment(models.Model):
     # 评论的用户 #
@@ -106,11 +112,10 @@ class Comment(models.Model):
     article = models.ForeignKey(Article)
 
 
-
 # #频道
 # class Channel(models.Model):
 #
-#     #Channel_ID = models.CharField(max_length=100)
+# #Channel_ID = models.CharField(max_length=100)
 #
 #     Channel_Name = models.CharField(max_length=100)
 #

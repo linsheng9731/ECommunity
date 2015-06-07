@@ -43,7 +43,7 @@ INSTALLED_APPS = (
     #'rest_framework',
     #'News',
     'ECommunity',
-    'haystack',
+    # 'haystack',
 )
 
 MIDDLEWARE_CLASSES = (
