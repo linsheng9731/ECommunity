@@ -53,8 +53,11 @@ def get_channel_articles(request):
         create_time = max2date[0]
         create_time_old = max2date[1]
     else:
-        create_time = max2date[0]
         create_time_old = u'0'
+        create_time = u'0'
+        if len(create_times)>=1:
+            create_time = max2date[0]
+
     articles = Article.objects.filter(create_time=create_time, channel=channel)
     collections = Collection.objects.filter(create_time=create_time, channel=channel)
 
