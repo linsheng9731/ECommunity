@@ -49,9 +49,9 @@ def auth(func):
             else:
               dic = request.GET
             name = dic["phonenum"]
-            pws = dic["pwd"]
+            pwd = dic["pwd"]
             request.session["dic"] = dic
-            user = authenticate(username=name, password=pws)
+            user = authenticate(username=name.strip(), password=pwd.strip())
             if user is not None:
                 auth_login(request, user)
             else:
