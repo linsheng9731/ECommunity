@@ -6,7 +6,7 @@ from models import Channel, Article, Customer, Collection
 class AdminCollection(admin.ModelAdmin):
     list_display = ('title', 'desc', 'create_time')
     search_fields = ('title', 'desc')
-    filter_horizontal = ('articles', 'author')
+    filter_horizontal = ('articles',)
 
 
 class AdminArticle(admin.ModelAdmin):

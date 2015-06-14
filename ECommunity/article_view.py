@@ -1,7 +1,7 @@
 # coding:utf8 #
 __author__ = 'damon_lin'
 
-from ECommunity.models import Article,Channel
+from ECommunity.models import Article, Channel, Collection
 from utils import serializer
 from django.http import HttpResponse
 import json
@@ -10,18 +10,33 @@ import datetime
 # 获取所有的文章
 def get_articles(request):
     articles = Article.objects.all()
-    atrs = ['id','title','body','image','type','create_time','author','channel_id','url',"desc"]
-    json_obj = serializer.ser(articles,atrs)
+    atrs = ['id', 'title', 'body', 'image', 'type', 'create_time', 'author', 'channel_id', 'url', "desc"]
+    json_obj = serializer.ser(articles, atrs)
     return HttpResponse(json_obj)
+
 
 # 获取指定的文章 --finish
 def get_article(request):
     id = request.GET["id"]
-    articles = Article.objects.filter(id = id)
-    atrs = ['id','title','body','image','type','create_time','author','channel_id','url',"desc"]
-    json_obj = serializer.ser(articles,atrs,serflag=False)
-    final_obj = json_obj[0]
-    return HttpResponse(json.dumps(final_obj))
+    articles = Article.objects.filter(id=id)
+
+    ## add start
+    # add by Abner
+    # in order to count the read times of specific article
+    if(len(articles)!=0):
+        articles[0].read_times += 1
+        articles[0].save()
+
+    ## add end
+
+    atrs = ['id', 'title', 'body', 'image', 'type', 'create_time', 'author', 'channel_id', 'url', "desc"]
+    json_obj = serializer.ser(articles, atrs, serflag=False)
+
+    final_obj_json = json.dumps(json_obj[0])
+    result = jsonpHelper(request,final_obj_json)
+
+    return HttpResponse(result,content_type="application/json")
+
 
 # 根据频道id来筛选文章,需要分页,插入时需要考虑day属性 --finish
 def get_channel_articles(request):
@@ -29,12 +44,68 @@ def get_channel_articles(request):
     id = get['channelid']
     day = get['date']
     channel = Channel.objects.get(id=id)
+    create_times = []
+    if day == u'0':
+        day = "9999-9-99"
+    else:
+        day = unicode(day)
+    raw = "select DISTINCT create_time,id from ECommunity_article where create_time<=" + "'" + unicode(
+        day) + "'" + " and channel_id=" + unicode(id) + " GROUP by create_time order by create_time DESC limit 2"
+    raw_query_set = Article.objects.raw(raw)
+    for item in raw_query_set:
+        create_times.append(item.create_time)
+
+    raw = "select DISTINCT create_time,id from ECommunity_collection where create_time<=" + "'" + unicode(
+        day) + "'" + " and channel_id=" + unicode(id) + " GROUP by create_time order by create_time DESC limit 2"
+    raw_query_set = Collection.objects.raw(raw)
+    for item in raw_query_set:
+        create_times.append(item.create_time)
+
+    max2date = max2(create_times)
+    if len(max2date) >= 2:
+        create_time = max2date[0]
+        create_time_old = max2date[1]
+    else:
+        create_time_old = u'0'
+        create_time = u'0'
+        if len(create_times)>=1:
+            create_time = max2date[0]
+
+    articles = Article.objects.filter(create_time=create_time, channel=channel)
+    collections = Collection.objects.filter(create_time=create_time, channel=channel)
+
+    atrs = ['id', 'title', 'image', 'type', 'create_time', 'author', 'channel_id', "desc"]  # 降序
+    articles_obj = serializer.ser(articles, atrs, serflag=False)  # 不进行序列化
+    atrs = ['id', 'title', 'image', 'type', 'create_time', 'author', 'channel_id', "desc"]  # 降序
+    collection_obj = serializer.ser(collections, atrs, serflag=False)  # 不进行序列化
+    for obj in articles_obj:
+        collection_obj.append(obj)
+    datatmp = {"date": create_time, "pre_date": create_time_old}
+
+    return HttpResponse(serializer.wrap(collection_obj, "articles", datatmp))
 
 
-    articles = Article.objects.filter(channel=channel,day=str(day)).order_by('-create_time')  # 降序
+def max2(args):
+    list = []
+    for obj in args:
+        list.append(obj)
+    sets = set(list)
+    sorted_sets = sorted(sets, reverse=True)
+    return sorted_sets
 
-    atrs = ['id','title','image','type','create_time','author','channel_id','url',"desc"]  # 降序
-    json_obj = serializer.ser(articles,atrs,serflag=False)  # 不进行序列化
-    datatmp = {"date":"123"}
-    return HttpResponse(serializer.wrap(json_obj,"articles",datatmp))
 
+def jsonpHelper(request,data):
+    if 'callback' in request.GET:
+        data = '%s(%s);' % (request.GET['callback'], data)
+    return data
+
+def getHotArticles(request):
+    articles = Article.objects.order_by("-read_times")[0:6]
+
+
+    atrs = ['id','title','image','url', "desc"]
+    json_obj = serializer.ser(articles, atrs, serflag=False)
+    json_obj = json.dumps(json_obj)
+    json_obj = jsonpHelper(request,json_obj)
+
+    return HttpResponse(json_obj,content_type="application/json")

@@ -1,7 +1,7 @@
 __author__ = 'abnerzheng'
 
 from haystack import indexes
-from models import Article,Channel
+from models import Article,Channel,Collection
 
 class ArticleIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
@@ -22,6 +22,17 @@ class ChannelIndex(indexes.SearchIndex, indexes.Indexable):
 
     def get_model(self):
         return Channel
+
+    def index_queryset(self, using=None):
+        return self.get_model().objects.all()
+
+class CollectionIndex(indexes.SearchIndex, indexes.Indexable):
+    text = indexes.CharField(document=True, use_template=True)
+    title = indexes.CharField(model_attr='title')
+    desc = indexes.CharField(model_attr='desc')
+
+    def get_model(self):
+        return Collection
 
     def index_queryset(self, using=None):
         return self.get_model().objects.all()
