@@ -56,11 +56,11 @@ def auth(func):
                 auth_login(request, user)
             else:
                 print "user is None"
-                return HttpResponse(json.dumps({'state': 'FAILED'}))
+                return HttpResponse(json.dumps({'state': 'FAILED','reason':'user is none!'}))
         except Exception,e:
             print "Exception occured"
             print e
-            return HttpResponse(json.dumps({'state': 'FAILED'}))
+            return HttpResponse(json.dumps({'state': 'FAILED','reason':unicode(e)}))
         ret = func(request)
         return ret
     return _deco

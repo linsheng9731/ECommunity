@@ -44,7 +44,7 @@ def add_comment(request):
     content = dic["content"]
     comments = Comment.objects.filter(customer=customer, article=article)
     if len(comments) > 0:
-        return cors_http_response("FAILED")
+        return cors_http_response("FAILED,comments already exits !")
     comment = Comment(customer=customer, article=article, content=content)
     comment.save()
     return cors_http_response("OK")
