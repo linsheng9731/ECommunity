@@ -75,6 +75,8 @@ class Customer(models.Model):
 
     grade = models.CharField('积分', max_length=100)
 
+    type = models.CharField('用户类型',max_length=100,default="C")
+
     channels = models.ManyToManyField(Channel, verbose_name='channel')
 
     articles = models.ManyToManyField(Article, verbose_name='article')
@@ -123,6 +125,12 @@ class Search(models.Model):
 class AppSeting(models.Model):
     # app首页
     image = models.CharField("首页图片", max_length=100)
+
+class Record(models.Model):
+    # 时间戳 #
+    timestamp = models.CharField(max_length=100)
+    # 持续时间 #
+    duration = models.CharField(max_length=400)
 
 # #频道
 # class Channel(models.Model):

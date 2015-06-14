@@ -51,6 +51,10 @@ urlpatterns = [
     url(r'^login', 'ECommunity.plugins.phone_register.userLogin'),
 
     url(r'^get_qrcode', 'ECommunity.qrcode_view.get_qrcode'),
+    url(r'^get_new_count','ECommunity.article_view.get_new_count'),
 
     url(r'^adminTool', 'ECommunity.adminToolView.tool_view'),
+
+    url(r'^add_record','ECommunity.record_view.add_record'),
+
 ]

@@ -6,6 +6,7 @@ from utils import serializer
 from django.http import HttpResponse
 import json
 import datetime
+from baiduPush import *
 
 # 获取所有的文章
 def get_articles(request):
@@ -38,51 +39,42 @@ def get_article(request):
     return HttpResponse(result,content_type="application/json")
 
 
-# 根据频道id来筛选文章,需要分页,插入时需要考虑day属性 --finish
 def get_channel_articles(request):
     get = request.GET
     id = get['channelid']
     day = get['date']
     channel = Channel.objects.get(id=id)
-    create_times = []
     if day == u'0':
         day = "9999-9-99"
     else:
         day = unicode(day)
-    raw = "select DISTINCT create_time,id from ECommunity_article where create_time<=" + "'" + unicode(
-        day) + "'" + " and channel_id=" + unicode(id) + " GROUP by create_time order by create_time DESC limit 2"
-    raw_query_set = Article.objects.raw(raw)
-    for item in raw_query_set:
-        create_times.append(item.create_time)
-
-    raw = "select DISTINCT create_time,id from ECommunity_collection where create_time<=" + "'" + unicode(
-        day) + "'" + " and channel_id=" + unicode(id) + " GROUP by create_time order by create_time DESC limit 2"
-    raw_query_set = Collection.objects.raw(raw)
-    for item in raw_query_set:
-        create_times.append(item.create_time)
-
-    max2date = max2(create_times)
-    if len(max2date) >= 2:
-        create_time = max2date[0]
-        create_time_old = max2date[1]
-    else:
-        create_time_old = u'0'
-        create_time = u'0'
-        if len(create_times)>=1:
-            create_time = max2date[0]
-
-    articles = Article.objects.filter(create_time=create_time, channel=channel)
-    collections = Collection.objects.filter(create_time=create_time, channel=channel)
-
-    atrs = ['id', 'title', 'image', 'type', 'create_time', 'author', 'channel_id', "desc"]  # 降序
-    articles_obj = serializer.ser(articles, atrs, serflag=False)  # 不进行序列化
-    atrs = ['id', 'title', 'image', 'type', 'create_time', 'author', 'channel_id', "desc"]  # 降序
-    collection_obj = serializer.ser(collections, atrs, serflag=False)  # 不进行序列化
+    articles_obj, collection_obj, create_time, create_time_old = merge_articles_collections(channel, day,
+                                                                                            id)
     for obj in articles_obj:
         collection_obj.append(obj)
     datatmp = {"date": create_time, "pre_date": create_time_old}
-
     return HttpResponse(serializer.wrap(collection_obj, "articles", datatmp))
+
+
+def get_new_count(request):
+    channels = Channel.objects.all()
+    objects = []
+    day = "9999-9-99"
+    articles_obj, collection_obj, create_time, create_time_old = merge_articles_collections_all(day)
+    for item in articles_obj:
+        objects.append(item)
+    for item in collection_obj:
+        objects.append(item)
+    datatmp = {"date": create_time, "pre_date": create_time_old}
+    msg = serializer.wrap(objects, "articles", datatmp)
+    msgtitle = {'title': u"你好", "description": u"正文"}
+    msgtitle = json.dumps(msgtitle)
+    ret = pushMessageAll(msgtitle, 1)
+    print(ret)
+    ret = pushMessageAll(msg, 0)
+    print(ret)
+
+    return HttpResponse(serializer.wrap(objects, "articles", datatmp))
 
 
 def max2(args):
@@ -92,6 +84,68 @@ def max2(args):
     sets = set(list)
     sorted_sets = sorted(sets, reverse=True)
     return sorted_sets
+
+
+# 根据channel 时间 来筛选出文章和集合
+def merge_articles_collections(channel, day, id):
+    create_times = []
+    raw = "select DISTINCT create_time,id from ECommunity_article where create_time<=" + "'" + unicode(
+        day) + "'" + " and channel_id=" + unicode(id) + " GROUP by create_time order by create_time DESC limit 2"
+    raw_query_set = Article.objects.raw(raw)
+    for item in raw_query_set:
+        create_times.append(item.create_time)
+    raw = "select DISTINCT create_time,id from ECommunity_collection where create_time<=" + "'" + unicode(
+        day) + "'" + " and channel_id=" + unicode(id) + " GROUP by create_time order by create_time DESC limit 2"
+    raw_query_set = Collection.objects.raw(raw)
+    for item in raw_query_set:
+        create_times.append(item.create_time)
+    max2date = max2(create_times)
+    if len(max2date) >= 2:
+        create_time = max2date[0]
+        create_time_old = max2date[1]
+    else:
+        create_time_old = u'0'
+        create_time = u'0'
+        if len(create_times) >= 1:
+            create_time = max2date[0]
+    articles = Article.objects.filter(create_time=create_time, channel=channel)
+    collections = Collection.objects.filter(create_time=create_time, channel=channel)
+    atrs = ['id', 'title', 'image', 'type', 'create_time', 'author', 'channel_id', "desc"]  # 降序
+    articles_obj = serializer.ser(articles, atrs, serflag=False)  # 不进行序列化
+    atrs = ['id', 'title', 'image', 'type', 'create_time', 'author', 'channel_id', "desc"]  # 降序
+    collection_obj = serializer.ser(collections, atrs, serflag=False)  # 不进行序列化
+    return articles_obj, collection_obj, create_time, create_time_old
+
+
+# 根据时间筛选单天的文章和合集
+def merge_articles_collections_all(day):
+    create_times = []
+    raw = "select DISTINCT create_time,id from ECommunity_article where create_time<=" + "'" + unicode(
+        day) + "'" + " GROUP by create_time order by create_time DESC limit 2"
+    raw_query_set = Article.objects.raw(raw)
+    for item in raw_query_set:
+        create_times.append(item.create_time)
+    raw = "select DISTINCT create_time,id from ECommunity_collection where create_time<=" + "'" + unicode(
+        day) + "'" + " GROUP by create_time order by create_time DESC limit 2"
+    raw_query_set = Collection.objects.raw(raw)
+    for item in raw_query_set:
+        create_times.append(item.create_time)
+    max2date = max2(create_times)
+    if len(max2date) >= 2:
+        create_time = max2date[0]
+        create_time_old = max2date[1]
+    else:
+        create_time_old = u'0'
+        create_time = u'0'
+        if len(create_times) >= 1:
+            create_time = max2date[0]
+    articles = Article.objects.filter(create_time=create_time)
+    collections = Collection.objects.filter(create_time=create_time)
+    atrs = ['id', 'title', 'image', 'type', 'create_time', 'author', 'channel_id', "desc"]  # 降序
+    articles_obj = serializer.ser(articles, atrs, serflag=False)  # 不进行序列化
+    atrs = ['id', 'title', 'image', 'type', 'create_time', 'author', 'channel_id', "desc"]  # 降序
+    collection_obj = serializer.ser(collections, atrs, serflag=False)  # 不进行序列化
+    return articles_obj, collection_obj, create_time, create_time_old
 
 
 def jsonpHelper(request,data):
