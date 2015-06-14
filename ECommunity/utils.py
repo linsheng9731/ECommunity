@@ -44,16 +44,22 @@ class serializer():
 def auth(func):
     def _deco(request):
         try:
-            name = request.POST["phonenum"]
-            pws = request.POST["pwd"]
+            if len(request.POST)>0:
+              dic = request.POST
+            else:
+              dic = request.GET
+            name = dic["phonenum"]
+            pws = dic["pwd"]
+            request.session["dic"] = dic
             user = authenticate(username=name, password=pws)
             if user is not None:
-                login(request, user)
+                auth_login(request, user)
             else:
                 print "user is None"
                 return HttpResponse(json.dumps({'state': 'FAILED'}))
-        except:
+        except Exception,e:
             print "Exception occured"
+            print e
             return HttpResponse(json.dumps({'state': 'FAILED'}))
         ret = func(request)
         return ret

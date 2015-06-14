@@ -23,6 +23,7 @@ def get_user(request):
     return HttpResponse(json_obj)
 
 # 获取某个用户关注的频道列表 多对多的关系 --finish
+# 验证
 @auth
 def get_user_channels(request):
     post = request.POST
@@ -31,7 +32,7 @@ def get_user_channels(request):
     if customer[0] == None:
         return HttpResponse('no user find !')
     channels = customer[0].channels.all()
-    atrs=['id']
+    atrs=['id'] # TODO add fields
     json_obj = serializer.ser(channels,atrs,serflag=False)
     append ={"phonenum":customer[0].phone}
     return HttpResponse(serializer.wrap(json_obj,"userChannels",append))
@@ -44,7 +45,7 @@ def get_user_articles(request):
     customer = Customer.objects.filter(phone = phone)
     if customer[0] == None:
         return HttpResponse('no user find !')
-    articles = customer[0].articles.all()
+    articles = customer[0].articles.all()  # TODO order
     atrs = ['id','title','image','type','create_time','author','channel_id','url','desc']
     json_obj = serializer.ser(articles,atrs,serflag=False)
 

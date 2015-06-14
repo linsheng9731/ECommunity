@@ -73,6 +73,8 @@ class Customer(models.Model):
 
     grade = models.CharField('积分', max_length=100)
 
+    type = models.CharField('用户类型',max_length=100,default="C")
+
     channels = models.ManyToManyField(Channel, verbose_name='channel')
 
     articles = models.ManyToManyField(Article, verbose_name='article')

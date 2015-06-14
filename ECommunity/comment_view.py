@@ -5,41 +5,69 @@ from lib import *
 from models import Comment, Customer, Article
 from utils import serializer
 
-
+# get a customer's comment for a specific article
+@auth
 def get_user_comments(request):
-    post = request.POST
-    user_id = post["user_id"]
-    comments = Comment.objects.filter(customer=user_id)
-    attrs = ["content"]
-    json_obj = serializer.ser(comments, attrs)
-    return HttpResponse(json_obj)
+    dic = request.session["dic"]
+    article_id = dic["article_id"]
+    user = request.user
+    customers = Customer.objects.filter(user=user)
+    customer = customers[0]
+    comments = Comment.objects.filter(customer=customer, article=article_id)
+    commentMap = comment_wrraper(comments)
+    return cors_http_response_json(commentMap)
 
+
+@auth
 def get_article_comments(request):
-    post = request.POST
-    article_id = post["article_id"]
+    dic = request.session["dic"]
+    article_id = dic["article_id"]
     comments = Comment.objects.filter(article=article_id)
-    attrs = ["content"]
-    json_obj = serializer.ser(comments, attrs)
-    return HttpResponse(json_obj)
+    contentMap = comment_wrraper(comments)
+    return cors_http_response_json(contentMap)
 
 
 # must check if user had added comment !
+@auth
 def add_comment(request):
-    post = request.POST
-    article_id = post["article_id"]
-    user_id = post["user_id"]
-    customers = Customer.objects.filter(id=user_id)
-    if len(customers) <=0:
-        return HttpResponse(json.dumps({"status": "FAILED user doesn't exist"}))
+    dic = request.session["dic"]
+    article_id = dic["article_id"]
+    user = request.user
+    customers = Customer.objects.filter(user=user)
+    if len(customers) <= 0:
+        return cors_http_response("FAILED user doesn't exist")
     customer = customers[0]
     articles = Article.objects.filter(id=article_id)
-    if len(articles) <=0:
-        return HttpResponse(json.dumps({"status": "FAILED article doesn't exist"}))
+    if len(articles) <= 0:
+        return cors_http_response("FAILED article doesn't exist")
     article = articles[0]
-    content = post["content"]
-    comments = Comment.objects.filter(customer=customer, article=article, content=content)
+    content = dic["content"]
+    comments = Comment.objects.filter(customer=customer, article=article)
     if len(comments) > 0:
-        return HttpResponse(json.dumps({"status": "FAILED"}))
-    comment = Comment(customer=customer, article=article,content=content)
+        return cors_http_response("FAILED")
+    comment = Comment(customer=customer, article=article, content=content)
     comment.save()
-    return HttpResponse(json.dumps({"status": "OK"}))
+    return cors_http_response("OK")
+
+
+def cors_http_response(status):
+    response = HttpResponse(json.dumps({"status": status}))
+    response["Access-Control-Allow-Origin"] = "*"
+    return response
+
+
+def cors_http_response_json(status):
+    response = HttpResponse(status)
+    response["Access-Control-Allow-Origin"] = "*"
+    return response
+
+ # calculate all type comment content's numbers
+def comment_wrraper(comments):
+    contentMap = {}
+    for item in comments:
+        content = item.content
+        if not contentMap.__contains__(content):
+            contentMap[content] = 1
+        else:
+            contentMap[content] += 1
+    return json.dumps(contentMap)
