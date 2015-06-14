@@ -5,7 +5,8 @@ from ECommunity.models import Article, Collection, Channel
 from utils import serializer
 from django.http import HttpResponse
 import json
-
+from lib import *
+from utils import auth
 
 def add_collection_articles(request):
     post = request.POST
@@ -41,9 +42,9 @@ def get_collection_articles(request):
     collection = collections[0]
     articles = collection.articles.all().order_by("-create_time");
     attrs = ['id', 'title', 'image', 'type', 'create_time', 'author', 'channel_id', 'url', "desc"]
-    json_obj = serializer.ser(articles, attrs,serflag=False)
+    json_obj = serializer.ser(articles, attrs, serflag=False)
 
-    return HttpResponse(serializer.wrap(json_obj,"collects"))
+    return HttpResponse(serializer.wrap(json_obj, "collects"))
 
 
 # add Collection
@@ -51,7 +52,7 @@ def get_collection_articles(request):
 # post = request.POST
 # phone = post['phonenum']
 # Collection = Collection()
-#     Collection.save()
+# Collection.save()
 #     return HttpResponse(json.dumps({'status':'ok'}))
 
 # delete Collection
@@ -89,5 +90,26 @@ def get_collections(request):
 
     atrs = ['id', 'title', 'image', 'create_time', "desc"]
     json_obj = serializer.ser(collections, atrs, serflag=False)  # 不进行序列化
+    datatmp = {"date": "123"}
+    return HttpResponse(serializer.wrap(json_obj, "articles", datatmp))
+
+
+# get classes means get collections from channels
+@auth
+def get_user_lessons(request):
+    user = request.user
+    customers = Customer.objects.filter(user=user)
+    customer = customers[0]
+    channels = customer.channels.all()
+    channels_id = []
+    for item in channels:
+        channels_id.append(item.id)
+    collections = Collection.objects.filter().order_by('-create_time')  # 降序
+    results = []
+    for item in collections:
+        if channels_id.__contains__(item.channel.id):
+            results.append(item)
+    atrs = ['id', 'title', 'image', 'create_time', "desc"]
+    json_obj = serializer.ser(results, atrs, serflag=False)  # 不进行序列化
     datatmp = {"date": "123"}
     return HttpResponse(serializer.wrap(json_obj, "articles", datatmp))
