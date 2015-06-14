@@ -53,5 +53,6 @@ urlpatterns = [
 
 
     url(r'^add_record','ECommunity.record_view.add_record'),
+    url(r'^get_record','ECommunity.record_view.get_record'),
 
 ]

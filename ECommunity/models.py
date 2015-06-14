@@ -107,13 +107,15 @@ class Collection(models.Model):
 
 class Comment(models.Model):
     # 评论的用户 #
-    customer = models.ForeignKey(Customer)
+    customer = models.ForeignKey(User)
     # 评论的内容 #
     content = models.TextField()
     # 评论的文章 #
     article = models.ForeignKey(Article)
 
 class Record(models.Model):
+    # 用户 #
+    customer = models.ForeignKey(Customer, default=4)
     # 时间戳 #
     timestamp = models.CharField(max_length=100)
     # 持续时间 #

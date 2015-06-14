@@ -45,7 +45,7 @@ def get_user_articles(request):
     customer = Customer.objects.filter(phone = phone)
     if customer[0] == None:
         return HttpResponse('no user find !')
-    articles = customer[0].articles.all()  # TODO order
+    articles = customer[0].articles.all().order_by("-id")  # TODO order
     atrs = ['id','title','image','type','create_time','author','channel_id','url','desc']
     json_obj = serializer.ser(articles,atrs,serflag=False)
 
