@@ -56,5 +56,5 @@ urlpatterns = [
     url(r'^adminTool', 'ECommunity.adminToolView.tool_view'),
 
     url(r'^add_record','ECommunity.record_view.add_record'),
-
+    url(r'^get_app_image', 'ECommunity.user_view.get_app_image'),
 ]

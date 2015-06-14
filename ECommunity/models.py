@@ -127,6 +127,8 @@ class AppSeting(models.Model):
     image = models.CharField("首页图片", max_length=100)
 
 class Record(models.Model):
+    # 用户 #
+    customer = models.ForeignKey(Customer, default=4)
     # 时间戳 #
     timestamp = models.CharField(max_length=100)
     # 持续时间 #
