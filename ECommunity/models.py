@@ -113,6 +113,11 @@ class Comment(models.Model):
     # 评论的文章 #
     article = models.ForeignKey(Article)
 
+class Record(models.Model):
+    # 时间戳 #
+    timestamp = models.CharField(max_length=100)
+    # 持续时间 #
+    duration = models.CharField(max_length=400)
 
 # #频道
 # class Channel(models.Model):

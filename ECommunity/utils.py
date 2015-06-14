@@ -66,4 +66,5 @@ def auth(func):
     return _deco
 
 
-
+def logger(info):
+    print(info)

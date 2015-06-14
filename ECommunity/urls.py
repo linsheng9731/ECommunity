@@ -51,4 +51,7 @@ urlpatterns = [
     url(r'^get_qrcode', 'ECommunity.qrcode_view.get_qrcode'),
     url(r'^get_new_count','ECommunity.article_view.get_new_count'),
 
+
+    url(r'^add_record','ECommunity.record_view.add_record'),
+
 ]
