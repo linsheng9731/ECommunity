@@ -20,10 +20,23 @@ def get_articles(request):
 def get_article(request):
     id = request.GET["id"]
     articles = Article.objects.filter(id=id)
+
+    ## add start
+    # add by Abner
+    # in order to count the read times of specific article
+    if(len(articles)!=0):
+        articles[0].read_times += 1
+        articles[0].save()
+
+    ## add end
+
     atrs = ['id', 'title', 'body', 'image', 'type', 'create_time', 'author', 'channel_id', 'url', "desc"]
     json_obj = serializer.ser(articles, atrs, serflag=False)
-    final_obj = json_obj[0]
-    return HttpResponse(json.dumps(final_obj))
+
+    final_obj_json = json.dumps(json_obj[0])
+    result = jsonpHelper(request,final_obj_json)
+
+    return HttpResponse(result,content_type="application/json")
 
 
 def get_channel_articles(request):
@@ -54,14 +67,14 @@ def get_new_count(request):
         objects.append(item)
     datatmp = {"date": create_time, "pre_date": create_time_old}
     msg = serializer.wrap(objects, "articles", datatmp)
-    msgtitle = {'title': u"你好", "description": u"正文"}
+    msgtitle = {'title': u"有更新！", "description": u"正文"}
     msgtitle = json.dumps(msgtitle)
     ret = pushMessageAll(msgtitle, 1)
     print(ret)
     ret = pushMessageAll(msg, 0)
     print(ret)
 
-    return HttpResponse(serializer.wrap(objects, "articles", datatmp))
+    return HttpResponse("推送成功！")
 
 
 def max2(args):
@@ -95,8 +108,8 @@ def merge_articles_collections(channel, day, id):
         create_time = u'0'
         if len(create_times) >= 1:
             create_time = max2date[0]
-    articles = Article.objects.filter(create_time=create_time, channel=channel)
-    collections = Collection.objects.filter(create_time=create_time, channel=channel)
+    articles = Article.objects.filter(create_time=create_time, channel=channel).order_by("-id")
+    collections = Collection.objects.filter(create_time=create_time, channel=channel).order_by("-id")
     atrs = ['id', 'title', 'image', 'type', 'create_time', 'author', 'channel_id', "desc"]  # 降序
     articles_obj = serializer.ser(articles, atrs, serflag=False)  # 不进行序列化
     atrs = ['id', 'title', 'image', 'type', 'create_time', 'author', 'channel_id', "desc"]  # 降序
@@ -134,3 +147,19 @@ def merge_articles_collections_all(day):
     collection_obj = serializer.ser(collections, atrs, serflag=False)  # 不进行序列化
     return articles_obj, collection_obj, create_time, create_time_old
 
+
+def jsonpHelper(request,data):
+    if 'callback' in request.GET:
+        data = '%s(%s);' % (request.GET['callback'], data)
+    return data
+
+def getHotArticles(request):
+    articles = Article.objects.order_by("-read_times")[0:6]
+
+
+    atrs = ['id','title','image','url', "desc"]
+    json_obj = serializer.ser(articles, atrs, serflag=False)
+    json_obj = json.dumps(json_obj)
+    json_obj = jsonpHelper(request,json_obj)
+
+    return HttpResponse(json_obj,content_type="application/json")

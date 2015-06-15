@@ -8,6 +8,7 @@ import json
 from lib import *
 from utils import auth
 
+
 def add_collection_articles(request):
     post = request.POST
     id = post['id']
@@ -53,7 +54,7 @@ def get_collection_articles(request):
 # phone = post['phonenum']
 # Collection = Collection()
 # Collection.save()
-#     return HttpResponse(json.dumps({'status':'ok'}))
+# return HttpResponse(json.dumps({'status':'ok'}))
 
 # delete Collection
 def del_collection(request):
@@ -109,7 +110,7 @@ def get_user_lessons(request):
     for item in collections:
         if channels_id.__contains__(item.channel.id):
             results.append(item)
-    atrs = ['id', 'title', 'image', 'create_time', "desc"]
+    atrs = ['id', 'title', 'image', 'create_time', "desc", "channel_id"]
     json_obj = serializer.ser(results, atrs, serflag=False)  # 不进行序列化
     datatmp = {"date": "123"}
     return HttpResponse(serializer.wrap(json_obj, "articles", datatmp))

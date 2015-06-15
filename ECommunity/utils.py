@@ -2,11 +2,10 @@
 __author__ = 'damon_lin'
 
 import json
-from  lib import *
 from django.contrib.auth import *
 from django.contrib.auth.views import *
 from django.contrib.auth.models import User
-
+from django.http import HttpResponse
 # 序列化对象
 class serializer():
     atrs = []

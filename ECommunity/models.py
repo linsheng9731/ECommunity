@@ -55,6 +55,8 @@ class Article(models.Model):
 
     day = models.CharField('分页哟怒', max_length=100, default=1)
 
+    read_times = models.IntegerField('阅读次数',default=0)
+
     def __unicode__(self):
         return u"%s" % (self.title)
 
@@ -78,6 +80,10 @@ class Customer(models.Model):
     channels = models.ManyToManyField(Channel, verbose_name='channel')
 
     articles = models.ManyToManyField(Article, verbose_name='article')
+
+    total_times = models.CharField(max_length=500,default="0")
+
+    total_durations = models.CharField(max_length=500,default="0")
 
     def __unicode__(self):
         return u"phone:%s nickname:%s " % (self.phone, self.nickname)
@@ -113,6 +119,17 @@ class Comment(models.Model):
     # 评论的文章 #
     article = models.ForeignKey(Article)
 
+class Search(models.Model):
+    # 用户输入提炼的关键字
+    keyword =  models.CharField(max_length=30)
+
+    # 频率
+    freq = models.IntegerField()
+
+class AppSeting(models.Model):
+    # app首页
+    image = models.CharField("首页图片", max_length=100)
+
 class Record(models.Model):
     # 用户 #
     customer = models.ForeignKey(Customer, default=4)
@@ -120,6 +137,10 @@ class Record(models.Model):
     timestamp = models.CharField(max_length=100)
     # 持续时间 #
     duration = models.CharField(max_length=400)
+    # 阅读文章次数 #
+    times = models.CharField(max_length=400,default="0")
+
+
 
 # #频道
 # class Channel(models.Model):

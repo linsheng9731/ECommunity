@@ -6,17 +6,21 @@ import json
 from models import *
 import csv
 import sys
+from utils import auth
+
 
 @auth
 def add_record(request):
-    data = '{"readcount":[{"timestamp":"2015-06-16","recorddata":"2"},{"timestamp":"2015-06-15","recorddata":"6"},{"timestamp":"2015-06-14","recorddata":"9"}],"readspend":[{"timestamp":"2015-06-13","recorddata":"0.039444444444444435"},{"timestamp":"2015-06-14","recorddata":"0.016666666666666666"},{"timestamp":"2015-06-15","recorddata":"0.006388888888888889"},{"timestamp":"2015-06-16","recorddata":"0.0036111111111111114"}]}'
+    data = '{"recorddata":[{"timestamp":"2015-06-16","readcount":"2","readspend":"0.00361111111"},{"timestamp":"2015-06-15","readcount":"2","readspend":"0.00361111111"},{"timestamp":"2015-06-14","readcount":"2","readspend":"0.00361111111"}],"sumreadcount":"6","sumreadspend":"0.04"}'
     try:
         data = json.loads(data)
-        records = data["readcount"]
+        records = data["recorddata"]
         user = request.user
+        customer = Customer.objects.filter(user=user)[0]
         for item in records:
             print(item)
-            record = Record(timestamp=item["timestamp"], duration=item["recorddata"],customer=user)
+            record = Record(timestamp=item["timestamp"], duration=item["readspend"], times=item["readcount"],
+                            customer=customer)
             record.save()
         return HttpResponse(json.dumps({"status": "OK"}))
     except Exception, e:
@@ -27,10 +31,10 @@ def get_record(requset):
     post = requset.POST
     start = post["start"]
     end = post["end"]
-    records = Record.objects.filter(timestamp__range=(start,end))
+    records = Record.objects.filter(timestamp__range=(start, end))
     response = HttpResponse(content_type='application/csv')
-    response['Content-Disposition'] = 'attachment; filename='+unicode(start)+'_'+unicode(end)+'.csv'
+    response['Content-Disposition'] = 'attachment; filename=' + unicode(start) + '_' + unicode(end) + '.csv'
     writer = csv.writer(response)
     for item in records:
-        writer.writerow((item.customer.phone,item.timestamp,item.duration))
+        writer.writerow((item.customer.phone, item.timestamp,item.times, item.duration))
     return response

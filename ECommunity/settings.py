@@ -32,7 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = (
     # 'django_admin_bootstrapped',
-
+    'grappelli.dashboard',
     'grappelli',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -43,7 +43,14 @@ INSTALLED_APPS = (
     #'rest_framework',
     #'News',
     'ECommunity',
-    # 'haystack',
+    'haystack',
+)
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    "django.contrib.auth.context_processors.auth",
+    "django.core.context_processors.request",
+    "django.core.context_processors.i18n",
+    'django.contrib.messages.context_processors.messages',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -127,3 +134,6 @@ HAYSTACK_CONNECTIONS = {
 }
 
 STATIC_ROOT = '/Users/damon_lin/Documents/GitHub/ECommunity/ECommunity/static'
+
+
+GRAPPELLI_INDEX_DASHBOARD = 'ECommunity.dashboard.CustomIndexDashboard'

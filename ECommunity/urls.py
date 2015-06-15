@@ -16,6 +16,7 @@ urlpatterns = [
     url(r'^get_articles$', 'ECommunity.article_view.get_articles'),
     url(r'^get_article$', 'ECommunity.article_view.get_article'),
     url(r'^get_channel_articles$', 'ECommunity.article_view.get_channel_articles'),
+    url(r'^getHotArticles$', 'ECommunity.article_view.getHotArticles'),
 
     url(r'^get_users$', 'ECommunity.user_view.get_users'),
     url(r'^get_user$', 'ECommunity.user_view.get_user'),
@@ -43,6 +44,7 @@ urlpatterns = [
     url(r'^get_collection_articles$', 'ECommunity.collection_view.get_collection_articles'),
 
     url(r'^search$', 'ECommunity.search_view.getSearchResult'),
+    url(r'^getHotkey','ECommunity.search_view.getHotkey'),
 
     url(r'^begin_phone_verify', 'ECommunity.plugins.phone_register.begin_phone_verify'),
     url(r'^phone_verify', 'ECommunity.plugins.phone_register.phone_verify'),
@@ -51,6 +53,7 @@ urlpatterns = [
     url(r'^get_qrcode', 'ECommunity.qrcode_view.get_qrcode'),
     url(r'^get_new_count','ECommunity.article_view.get_new_count'),
 
+    url(r'^adminTool', 'ECommunity.adminToolView.tool_view'),
 
     url(r'^add_record','ECommunity.record_view.add_record'),
     url(r'^get_record','ECommunity.record_view.get_record'),
