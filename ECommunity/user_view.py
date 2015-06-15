@@ -3,6 +3,8 @@ __author__ = 'damon_lin'
 
 from ECommunity.models import Customer, Channel, Article
 from utils import serializer, auth
+from ECommunity.models import Customer,Channel,Article, AppSeting
+from utils import serializer,auth
 from django.http import HttpResponse
 import json
 
@@ -108,4 +110,9 @@ def add_user_article(request):
         return HttpResponse('no user find !')
     article = Article.objects.get(id=articleid)
     customer[0].articles.add(article)
+
     return HttpResponse(json.dumps({'status': 'ok'}))
+
+def get_app_image(request):
+    image = AppSeting.objects.all()[0].image
+    return HttpResponse(json.dumps({"image":image}))

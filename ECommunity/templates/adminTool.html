@@ -110,8 +110,10 @@
 
 
                         <ul class="grp-listing-large">
-                            <input type="file" onchange="loadImage(this)" id="upload"/>
-                            <input type="button" value="上传" id="uploadAppImage">
+                            <form enctype="multipart/form-data" method="post" id="uploadForm">
+                                <input name="upfile" type="file" onchange="loadImage(this)" id="upload"/>
+                                <input type="submit" value="上传" id="uploadAppImage">
+                            </form>
                         </ul>
 
 
@@ -161,15 +163,23 @@
         }
     }
 
-    $(".uploadAppImage").click(function (e) {
-        var formData = new FormData();
-        formData.append('up_file', document.getElementById('upload').files[0]);
-        $.post('url',formData, function(msg){
+    $("#uploadAppImage").click(function (e) {
+        e = e || window.event;
+        e.preventDefault();
+        var formData = new FormData(document.getElementById("uploadForm"));
+        formData.append('upfile', document.getElementById('upload').files[0]);
+        $.ajax({
+            url: "http://localhost:8001/appImgUp",
+            type: "POST",
+            data: formData,
+            processData: false,  // 告诉jQuery不要去处理发送的数据
+            contentType: false   // 告诉jQuery不要去设置Content-Type请求头
+        }).done(function(msg){
             msg = JSON.parse(msg);
-            if(msg.state == "success"){
-                alert("上传成功，首页图片已被替换");
+            if(msg.state = "success"){
+                alert("上传图片成功");
             }else{
-                alert("上传失败");
+                alert("上传图片失败");
             }
         })
     })
