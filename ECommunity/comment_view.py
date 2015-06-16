@@ -8,23 +8,29 @@ from utils import serializer
 # get a customer's comment for a specific article
 @auth
 def get_user_comments(request):
-    dic = request.session["dic"]
-    article_id = dic["article_id"]
-    user = request.user
-    customers = Customer.objects.filter(user=user)
-    customer = customers[0]
-    comments = Comment.objects.filter(customer=user, article=article_id)
-    commentMap = comment_wrraper(comments)
-    return cors_http_response_json(commentMap)
+    try:
+        dic = request.session["dic"]
+        article_id = dic["article_id"]
+        user = request.user
+        customers = Customer.objects.filter(user=user)
+        customer = customers[0]
+        comments = Comment.objects.filter(customer=user, article=article_id)
+        commentMap = comment_wrraper(comments)
+        return cors_http_response_json(commentMap)
+    except Exception,e:
+        return cors_http_response(unicode(e))
 
 
 @auth
 def get_article_comments(request):
-    dic = request.session["dic"]
-    article_id = dic["article_id"]
-    comments = Comment.objects.filter(article=article_id)
-    contentMap = comment_wrraper(comments)
-    return cors_http_response_json(contentMap)
+    try:
+        dic = request.session["dic"]
+        article_id = dic["article_id"]
+        comments = Comment.objects.filter(article=article_id)
+        contentMap = comment_wrraper(comments)
+        return cors_http_response_json(contentMap)
+    except Exception,e:
+        return  cors_http_response(unicode(e))
 
 
 # must check if user had added comment !
