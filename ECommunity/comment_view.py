@@ -30,24 +30,27 @@ def get_article_comments(request):
 # must check if user had added comment !
 @auth
 def add_comment(request):
-    dic = request.session["dic"]
-    article_id = dic["article_id"]
-    user = request.user
-    customers = Customer.objects.filter(user=user)
-    if len(customers) <= 0:
-        return cors_http_response("FAILED user doesn't exist")
-    customer = customers[0]
-    articles = Article.objects.filter(id=article_id)
-    if len(articles) <= 0:
-        return cors_http_response("FAILED article doesn't exist")
-    article = articles[0]
-    content = dic["content"]
-    comments = Comment.objects.filter(customer=customer, article=article)
-    if len(comments) > 0:
-        return cors_http_response("FAILED,comments already exits !")
-    comment = Comment(customer=customer, article=article, content=content)
-    comment.save()
-    return cors_http_response("OK")
+    try:
+        dic = request.session["dic"]
+        article_id = dic["article_id"]
+        user = request.user
+        customers = Customer.objects.filter(user=user)
+        if len(customers) <= 0:
+            return cors_http_response("FAILED user doesn't exist")
+        customer = customers[0]
+        articles = Article.objects.filter(id=article_id)
+        if len(articles) <= 0:
+            return cors_http_response("FAILED article doesn't exist")
+        article = articles[0]
+        content = dic["content"]
+        comments = Comment.objects.filter(customer=user, article=article)
+        if len(comments) > 0:
+            return cors_http_response("FAILED,comments already exits !")
+        comment = Comment(customer=user, article=article, content=content)
+        comment.save()
+        return cors_http_response("OK")
+    except Exception,e:
+        return cors_http_response(unicode(e))
 
 
 def cors_http_response(status):
