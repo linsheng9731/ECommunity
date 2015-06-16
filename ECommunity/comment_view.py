@@ -13,7 +13,7 @@ def get_user_comments(request):
     user = request.user
     customers = Customer.objects.filter(user=user)
     customer = customers[0]
-    comments = Comment.objects.filter(customer=customer, article=article_id)
+    comments = Comment.objects.filter(customer=user, article=article_id)
     commentMap = comment_wrraper(comments)
     return cors_http_response_json(commentMap)
 
