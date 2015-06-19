@@ -13,7 +13,7 @@ from utils import auth
 def add_record(request):
     dic = request.session["dic"]
     data = dic["data"]
-    data = '{"recorddata":[{"timestamp":"2015-06-16","readcount":"2","readspend":"0.00361111111"},{"timestamp":"2015-06-15","readcount":"2","readspend":"0.00361111111"},{"timestamp":"2015-06-14","readcount":"2","readspend":"0.00361111111"}],"sumreadcount":"6","sumreadspend":"0.04"}'
+    # data = '{"recorddata":[{"timestamp":"2015-06-16","readcount":"2","readspend":"0.00361111111"},{"timestamp":"2015-06-15","readcount":"2","readspend":"0.00361111111"},{"timestamp":"2015-06-14","readcount":"2","readspend":"0.00361111111"}],"sumreadcount":"6","sumreadspend":"0.04"}'
     try:
         data = json.loads(data)
         records = data["recorddata"]
@@ -36,7 +36,7 @@ def add_record(request):
         customer.total_times = unicode(customer_times)
         customer.total_durations = unicode(customer_durations)
 
-        return HttpResponse(json.dumps({"status": "OK"}))
+        return HttpResponse(json.dumps({"sumreadcount": customer_times,"sumreadspend":customer_durations}))
     except Exception, e:
         logger(e)
 
