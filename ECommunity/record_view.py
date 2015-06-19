@@ -35,7 +35,7 @@ def add_record(request):
         customer_durations += total_duration
         customer.total_times = unicode(customer_times)
         customer.total_durations = unicode(customer_durations)
-
+        customer.save()
         return HttpResponse(json.dumps({"sumreadcount": customer_times,"sumreadspend":customer_durations}))
     except Exception, e:
         logger(e)
