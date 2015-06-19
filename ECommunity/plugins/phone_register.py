@@ -67,7 +67,6 @@ def phone_verify(request):
     verification_code = request.POST['verification_code']
     if verification_code == request.session['phone_verify']:
         phone = request.session['phone_number']
-        date = datetime.now()
 
         u = User.objects.filter(username=phone)
         if len(u)>0:  # 假如用户已经存在 直接更新密码
