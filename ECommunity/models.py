@@ -6,6 +6,7 @@ from django.contrib import admin
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import User
+import datetime
 
 
 class Channel(models.Model):
@@ -14,15 +15,15 @@ class Channel(models.Model):
     # 正文 #
     content = models.CharField('正文', max_length=300)
     # 缩略图 #
-    image = models.CharField('缩略图', max_length=300)
+    image = models.ImageField('缩略图')
     # 一级目录的顺序 #
-    cata = models.CharField('一级目录顺序', max_length=100)
+    cata = models.CharField('一级目录顺序', max_length=100,default='0')
     # 表示二级目录的顺序 #
     num = models.CharField('二级目录顺序', max_length=100)
     # 描述 #
     desc = models.TextField('描述')
     # 表示是一级还是二级 #
-    type = models.CharField('0 表示一级目录，1 表示二级目录', max_length=100)
+    type = models.CharField('0 表示一级目录，1 表示二级目录', max_length=100,default='0')
 
     def __unicode__(self):
         return u"%s" % (self.title)
@@ -45,7 +46,7 @@ class Article(models.Model):
     # which channel the article belong to #
     channel = models.ForeignKey(Channel, verbose_name='频道')
 
-    type = models.TextField('类型',default="A")
+    type = models.TextField('类型', default="A")
 
     create_time = models.CharField('创建时间', max_length=100)
 
@@ -53,9 +54,9 @@ class Article(models.Model):
 
     desc = models.TextField('描述', default="")
 
-    day = models.CharField('分页哟怒', max_length=100, default=1)
+    day = models.CharField('分页', max_length=100, default=1)
 
-    read_times = models.IntegerField('阅读次数',default=0)
+    read_times = models.IntegerField('阅读次数', default=0)
 
     def __unicode__(self):
         return u"%s" % (self.title)
@@ -75,15 +76,15 @@ class Customer(models.Model):
 
     grade = models.CharField('积分', max_length=100)
 
-    type = models.CharField('用户类型',max_length=100,default="C")
+    type = models.CharField('用户类型', max_length=100, default="C")
 
     channels = models.ManyToManyField(Channel, verbose_name='channel')
 
     articles = models.ManyToManyField(Article, verbose_name='article')
 
-    total_times = models.CharField(max_length=500,default="0")
+    total_times = models.CharField(max_length=500, default="0")
 
-    total_durations = models.CharField(max_length=500,default="0")
+    total_durations = models.CharField(max_length=500, default="0")
 
     def __unicode__(self):
         return u"phone:%s nickname:%s " % (self.phone, self.nickname)
@@ -93,22 +94,27 @@ class Collection(models.Model):
     # 标题 #
     title = models.CharField('标题', max_length=100)
     # 缩略图 #
-    image = models.CharField('缩略图', max_length=300)
+    image = models.ImageField('缩略图')
     # 描述 #
     desc = models.TextField('描述')
     # 类型 #
-    type = models.CharField('类型',max_length=300,default="C")
+    type = models.CharField('类型', max_length=300, default="2")
     # 创建时间 #
     create_time = models.CharField('创建时间', max_length=100)
     # 文章 #
     articles = models.ManyToManyField(Article, verbose_name='article')
     # 编辑 #
-    author = models.CharField(max_length=300,default="None")
+    author = models.CharField(max_length=300, default="None")
     # 所属频道 #
     channel = models.ForeignKey(Channel, verbose_name="频道", default=1)
 
     def __unicode__(self):
         return u"%s" % (self.title)
+
+    def save(self, *args, **kv):
+        self.create_time = unicode(datetime.datetime.now())[0:10]
+        super(Collection, self).save(*args, **kv)
+        pass
 
 
 class Comment(models.Model):
@@ -119,16 +125,19 @@ class Comment(models.Model):
     # 评论的文章 #
     article = models.ForeignKey(Article)
 
+
 class Search(models.Model):
     # 用户输入提炼的关键字
-    keyword =  models.CharField(max_length=30)
+    keyword = models.CharField(max_length=30)
 
     # 频率
     freq = models.IntegerField()
 
+
 class AppSeting(models.Model):
     # app首页
     image = models.CharField("首页图片", max_length=100)
+
 
 class Record(models.Model):
     # 用户 #
@@ -138,8 +147,7 @@ class Record(models.Model):
     # 持续时间 #
     duration = models.CharField(max_length=400)
     # 阅读文章次数 #
-    times = models.CharField(max_length=400,default="0")
-
+    times = models.CharField(max_length=400, default="0")
 
 
 # #频道
@@ -147,9 +155,9 @@ class Record(models.Model):
 #
 # #Channel_ID = models.CharField(max_length=100)
 #
-#     Channel_Name = models.CharField(max_length=100)
+# Channel_Name = models.CharField(max_length=100)
 #
-#     Type_ID = models.CharField(max_length=100)
+# Type_ID = models.CharField(max_length=100)
 #
 #     Channel_Num = models.CharField(max_length=100)
 #

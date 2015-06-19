@@ -39,8 +39,8 @@ def begin_phone_verify(request):
     print verification_code, '----------------------'
     request.session['phone_verify'] = verification_code
     request.session['phone_number'] = phone
-    verify_data = {'account': 'cf_879085583', 'password': '123456',
-                   'mobile': phone, 'content': '您的验证码是：'+verification_code+'。请不要把验证码泄露给其他人。'}
+    verify_data = {'account': 'cf_quletao', 'password': 'qlt10905qlt',
+                   'mobile': phone, 'content': '闲着-中老年人休闲生活服务平台，验证码：'+verification_code}
     verify_data_urlencode = urllib.urlencode(verify_data)
     req = urllib2.Request(url=VERIFY_PHONE_URL, data=verify_data_urlencode)
 
@@ -113,10 +113,6 @@ def userLogin(request):
     else:
         return HttpResponse(json.dumps({'state': 'FAILED'}))
 
-# 用户注销
-def logoutView(request):
-    logout(request)
-    return render(request, website.logout)
 
 # 重置密码
 def resetPassword(request):

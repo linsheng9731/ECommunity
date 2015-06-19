@@ -6,6 +6,9 @@ from django.contrib.auth import *
 from django.contrib.auth.views import *
 from django.contrib.auth.models import User
 from django.http import HttpResponse
+from django.db.models import ImageField,DateTimeField
+import  datetime
+
 # 序列化对象
 class serializer():
     atrs = []
@@ -16,7 +19,8 @@ class serializer():
         for item in model:  # 将特殊对象转化成普通map对象
             obj = {}
             for atr in self.atrs:
-                obj[atr] = getattr(item, atr)
+                attr = getattr(item,atr)
+                obj[atr] = unicode(attr)
             json_obj.append(obj)  # 将普通map对象转化成json格式
         if serflag:
             return json.dumps(json_obj)  # 转化为json对象

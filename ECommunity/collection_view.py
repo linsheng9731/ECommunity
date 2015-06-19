@@ -84,8 +84,6 @@ def del_collection(request):
 def get_collections(request):
     get = request.GET
     channel_id = get['channelid']
-    day = get['date']
-    channel = Channel.objects.get(id=id)
 
     collections = Collection.objects.filter(channel=channel_id).order_by('-create_time')  # 降序
 

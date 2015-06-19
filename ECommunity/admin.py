@@ -8,6 +8,9 @@ class AdminCollection(admin.ModelAdmin):
     search_fields = ('title', 'desc')
     filter_horizontal = ('articles',)
 
+    def get_fields(self, request, obj=None):
+        return ['title', 'image', 'articles', 'desc', 'author', 'channel']
+
 
 class AdminArticle(admin.ModelAdmin):
     list_display = ('title', 'desc', 'create_time')
@@ -15,7 +18,7 @@ class AdminArticle(admin.ModelAdmin):
 
 
 class AdminChannel(admin.ModelAdmin):
-    list_display = ('title', 'desc', 'cata', 'num')
+    list_display = ('title', 'desc', 'num')
     search_fields = ('title', 'desc')
 
 

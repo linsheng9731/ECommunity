@@ -1,6 +1,7 @@
 from django.conf.urls import include, url
 from django.contrib import admin
-
+from django.conf import settings
+from django.conf.urls.static import static
 urlpatterns = [
     # Examples:
     # url(r'^$', 'ECommunity.views.home', name='home'),
@@ -62,5 +63,7 @@ urlpatterns = [
 
 
     url(r'^get_app_image', 'ECommunity.user_view.get_app_image'),
+
+    url(r'^image/(?P<path>.*)', 'django.views.static.serve', {'document_root': '/Users/damon_lin/Documents/GitHub/ECommunity/ECommunity/image'}),
 
 ]

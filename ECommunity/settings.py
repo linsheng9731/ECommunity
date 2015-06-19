@@ -40,7 +40,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    #'rest_framework',
+    # 'rest_framework',
     #'News',
     'ECommunity',
     # 'haystack',
@@ -57,11 +57,11 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
-    #'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    #'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
     #'django.middleware.security.SecurityMiddleware',
 )
 
@@ -95,11 +95,11 @@ DATABASES = {
     'default': {
         # 'ENGINE': 'django.db.backends.sqlite3',
         'ENGINE': 'django.db.backends.mysql',
-        'HOST':'121.40.136.199',
+        'HOST': '121.40.136.199',
         'NAME': 'ECommunity',
-        'USER':'Spider',
-        'PASSWORD':'passw0rd',
-        'PORT':'3306'
+        'USER': 'Spider',
+        'PASSWORD': 'passw0rd',
+        'PORT': '3306'
     }
 }
 
@@ -110,9 +110,9 @@ DATABASES = {
 # LANGUAGE_CODE = 'en-us'
 #
 # TIME_ZONE = 'UTC'
-LANGUAGE_CODE='zh-CN'
+LANGUAGE_CODE = 'zh-CN'
 
-TIME_ZONE ='Asia/Shanghai'
+TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 
@@ -125,7 +125,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
-
+MEDIA_ROOT = '/Users/damon_lin/Documents/GitHub/ECommunity/ECommunity/image'
+MEDIA_URL = "/image/"
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'ECommunity.whoosh_backend_cn.WhooshEngine',
@@ -134,6 +135,5 @@ HAYSTACK_CONNECTIONS = {
 }
 
 STATIC_ROOT = '/Users/damon_lin/Documents/GitHub/ECommunity/ECommunity/static'
-
 
 GRAPPELLI_INDEX_DASHBOARD = 'ECommunity.dashboard.CustomIndexDashboard'
