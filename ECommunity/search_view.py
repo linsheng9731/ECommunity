@@ -34,7 +34,7 @@ def getSearchResult(request):
                     Search(keyword=e,freq=1).save()
 
 
-    result = SearchQuerySet().filter(content=searchKey)
+    result = SearchQuerySet().filter(content=searchKey)[0:50]
     if len(result)==0:
         return HttpResponse(json.dumps({'search':[]}))
     return HttpResponse(convertToFormat(result,searchKey))
