@@ -17,13 +17,13 @@ class Channel(models.Model):
     # 缩略图 #
     image = models.ImageField('缩略图')
     # 一级目录的顺序 #
-    cata = models.CharField('一级目录顺序', max_length=100,default='0')
+    cata = models.CharField('一级目录ID：新建一级目录时，添加不重复的任意ID号，新建二级目录时，添加其归属的一级目录ID即可', max_length=100, default='0')
     # 表示二级目录的顺序 #
-    num = models.CharField('二级目录顺序', max_length=100)
+    num = models.CharField('二级目录顺序：新建一级目录时，填写顺序0,新建二级目录时，填写其一级目录下的顺序(从1开始)', max_length=100)
     # 描述 #
     desc = models.TextField('描述')
     # 表示是一级还是二级 #
-    type = models.CharField('0 表示一级目录，1 表示二级目录', max_length=100,default='0')
+    type = models.CharField('0 表示一级目录，1 表示二级目录', max_length=100, default='0')
 
     def __unicode__(self):
         return u"%s" % (self.title)
@@ -46,7 +46,7 @@ class Article(models.Model):
     # which channel the article belong to #
     channel = models.ForeignKey(Channel, verbose_name='频道')
 
-    type = models.TextField('类型', default="A")
+    type = models.TextField('类型', default="1")
 
     create_time = models.CharField('创建时间', max_length=100)
 
@@ -159,9 +159,9 @@ class Record(models.Model):
 #
 # Type_ID = models.CharField(max_length=100)
 #
-#     Channel_Num = models.CharField(max_length=100)
+# Channel_Num = models.CharField(max_length=100)
 #
-#     Channel_Cata = models.CharField(max_length=100)
+# Channel_Cata = models.CharField(max_length=100)
 #
 #     Channel_Desc = models.CharField(max_length=100)
 #
