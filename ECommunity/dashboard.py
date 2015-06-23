@@ -81,7 +81,7 @@ class CustomIndexDashboard(Dashboard):
             children=[
                 {
                     'title': _(u'获取统计信息'),
-                    'url': 'http://docs.djangoproject.com/',
+                    'url': '/adminTool',
                     'external': False,
                 },
                 {

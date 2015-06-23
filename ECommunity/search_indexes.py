@@ -6,7 +6,7 @@ from models import Article,Channel,Collection
 class ArticleIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
     title = indexes.CharField(model_attr='title')
-    body = indexes.CharField(model_attr='body')
+    body = indexes.CharField(model_attr='text')
     desc = indexes.CharField(model_attr='desc')
 
     def get_model(self):

@@ -169,7 +169,7 @@
         var formData = new FormData(document.getElementById("uploadForm"));
         formData.append('upfile', document.getElementById('upload').files[0]);
         $.ajax({
-            url: "http://localhost:8001/appImgUp",
+            url: "http://www.funpeach.com:8001/appImgUp",
             type: "POST",
             data: formData,
             processData: false,  // 告诉jQuery不要去处理发送的数据
