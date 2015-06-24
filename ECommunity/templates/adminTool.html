@@ -89,11 +89,13 @@
                     </div>
                     <div id="module_3" class="grp-module grp-dashboard-module">
 
-                        <h2 class="module_title">推送所有更新</h2>
-                        <form method="post" action="get_new_count">
+                        <h2 class="module_title">推送通知</h2>
+                        <form method="post" action="push_news">
+                            标题：<input type="text" name="title">
+                            正文：<input type="text" name="desc">
                             <div class="grp-row">
                                 <input type="submit" style="margin: 0px 0px 0px 285px;">
-                        </div>
+                             </div>
 
                         </form>
 

@@ -71,3 +71,14 @@ def auth(func):
 
 def logger(info):
     print(info)
+
+def cors_http_response(status):
+    response = HttpResponse(json.dumps({"status": status}))
+    response["Access-Control-Allow-Origin"] = "*"
+    return response
+
+
+def cors_http_response_json(status):
+    response = HttpResponse(status)
+    response["Access-Control-Allow-Origin"] = "*"
+    return response

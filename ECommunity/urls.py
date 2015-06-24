@@ -52,7 +52,7 @@ urlpatterns = [
     url(r'^login', 'ECommunity.plugins.phone_register.userLogin'),
 
     url(r'^get_qrcode', 'ECommunity.qrcode_view.get_qrcode'),
-    url(r'^get_new_count','ECommunity.article_view.get_new_count'),
+    url(r'^push_news','ECommunity.article_view.push_news'),
 
     url(r'^adminTool', 'ECommunity.adminToolView.tool_view'),
 
@@ -65,5 +65,7 @@ urlpatterns = [
     url(r'^get_app_image', 'ECommunity.user_view.get_app_image'),
 
     url(r'^image/(?P<path>.*)', 'django.views.static.serve', {'document_root': '/Users/damon_lin/Documents/GitHub/ECommunity/ECommunity/image'}),
+
+    url(r'^push_article','ECommunity.article_view.push_article'),
 
 ]

@@ -2,7 +2,7 @@
 __author__ = 'damon_lin'
 
 from ECommunity.models import Article, Channel, Collection
-from utils import serializer
+from utils import serializer, cors_http_response
 from django.http import HttpResponse
 import json
 import datetime
@@ -24,7 +24,7 @@ def get_article(request):
     ## add start
     # add by Abner
     # in order to count the read times of specific article
-    if(len(articles)!=0):
+    if (len(articles) != 0):
         articles[0].read_times += 1
         articles[0].save()
 
@@ -34,9 +34,9 @@ def get_article(request):
     json_obj = serializer.ser(articles, atrs, serflag=False)
 
     final_obj_json = json.dumps(json_obj[0])
-    result = jsonpHelper(request,final_obj_json)
+    result = jsonpHelper(request, final_obj_json)
 
-    return HttpResponse(result,content_type="application/json")
+    return HttpResponse(result, content_type="application/json")
 
 
 def get_channel_articles(request):
@@ -56,25 +56,31 @@ def get_channel_articles(request):
     return HttpResponse(serializer.wrap(collection_obj, "articles", datatmp))
 
 
-def get_new_count(request):
-    channels = Channel.objects.all()
-    objects = []
-    day = "9999-9-99"
-    articles_obj, collection_obj, create_time, create_time_old = merge_articles_collections_all(day)
-    for item in articles_obj:
-        objects.append(item)
-    for item in collection_obj:
-        objects.append(item)
-    datatmp = {"date": create_time, "pre_date": create_time_old}
-    msg = serializer.wrap(objects, "articles", datatmp)
-    msgtitle = {'title': u"有更新！", "description": u"正文"}
+# 推送提醒
+def push_news(request):
+    post = request.POST
+    title = post['title']
+    desc = post['desc']
+    msgtitle = {'title': title, "description": desc}
     msgtitle = json.dumps(msgtitle)
     ret = pushMessageAll(msgtitle, 1)
     print(ret)
+    return HttpResponse("推送成功！")
+
+
+# 根据id推送文章
+def push_article(request):
+    post = request.POST
+    id = post["id"]
+    objects = Article.objects.filter(id=id)
+    atrs = ['id', 'title', 'image', 'type', 'create_time', 'author', 'channel_id', "desc"]  # 降序
+    articles_obj = serializer.ser(objects, atrs, serflag=False)  # 不进行序列化
+    datatmp = {"date": '0', "pre_date": '0'}
+    msg = serializer.wrap(articles_obj, "articles", datatmp)
     ret = pushMessageAll(msg, 0)
     print(ret)
 
-    return HttpResponse("推送成功！")
+    return cors_http_response("OK")
 
 
 def max2(args):
@@ -148,18 +154,18 @@ def merge_articles_collections_all(day):
     return articles_obj, collection_obj, create_time, create_time_old
 
 
-def jsonpHelper(request,data):
+def jsonpHelper(request, data):
     if 'callback' in request.GET:
         data = '%s(%s);' % (request.GET['callback'], data)
     return data
 
+
 def getHotArticles(request):
     articles = Article.objects.order_by("-read_times")[0:6]
 
-
-    atrs = ['id','title','image','url', "desc"]
+    atrs = ['id', 'title', 'image', 'url', "desc"]
     json_obj = serializer.ser(articles, atrs, serflag=False)
     json_obj = json.dumps(json_obj)
-    json_obj = jsonpHelper(request,json_obj)
+    json_obj = jsonpHelper(request, json_obj)
 
-    return HttpResponse(json_obj,content_type="application/json")
+    return HttpResponse(json_obj, content_type="application/json")

@@ -3,7 +3,7 @@ __author__ = 'damon_lin'
 
 from lib import *
 from models import Comment, Customer, Article
-from utils import serializer
+from utils import serializer,cors_http_response,cors_http_response_json
 
 # get a customer's comment for a specific article
 @auth
@@ -59,16 +59,6 @@ def add_comment(request):
         return cors_http_response(unicode(e))
 
 
-def cors_http_response(status):
-    response = HttpResponse(json.dumps({"status": status}))
-    response["Access-Control-Allow-Origin"] = "*"
-    return response
-
-
-def cors_http_response_json(status):
-    response = HttpResponse(status)
-    response["Access-Control-Allow-Origin"] = "*"
-    return response
 
  # calculate all type comment content's numbers
 def comment_wrraper(comments):
