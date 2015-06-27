@@ -17,13 +17,14 @@ def get_users(request):
 
 
 # 根据id获取用户
+@auth
 def get_user(request):
     post = request.POST
-    phone = post['phone']
+    phone = post['phonenum']
     customer = Customer.objects.filter(phone=phone)
     atrs = ['id', 'phone', 'nickname', 'sex', 'icon', 'grade']
-    json_obj = serializer.ser(customer, atrs)
-    return HttpResponse(json_obj)
+    json_obj = serializer.ser(customer, atrs,serflag=False)
+    return HttpResponse(serializer.wrap(json_obj,"user"))
 
 
 # 获取某个用户关注的频道列表 多对多的关系 --finish

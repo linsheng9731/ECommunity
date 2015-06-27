@@ -46,5 +46,5 @@ class AdminCustomer(admin.ModelAdmin):
 
 admin.site.register(Channel, AdminChannel)
 admin.site.register(Article, AdminArticle)
-# admin.site.register(Customer, AdminCustomer)
+admin.site.register(Customer, AdminCustomer)
 admin.site.register(Collection, AdminCollection)
